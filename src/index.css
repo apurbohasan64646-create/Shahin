@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans Bengali", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Print Utilities and Canvas Exporter Overrides */
+.print-area {
+  /* Redefine Tailwind v4 default OKLCH colors to standard sRGB Hex for html2canvas compatibility */
+  --color-slate-5: #f8fafc !important;
+  --color-slate-50: #f8fafc !important;
+  --color-slate-100: #f1f5f9 !important;
+  --color-slate-200: #e2e8f0 !important;
+  --color-slate-300: #cbd5e1 !important;
+  --color-slate-400: #94a3b8 !important;
+  --color-slate-500: #64748b !important;
+  --color-slate-600: #475569 !important;
+  --color-slate-700: #334155 !important;
+  --color-slate-800: #1e293b !important;
+  --color-slate-900: #0f172a !important;
+  --color-slate-950: #020817 !important;
+
+  --color-gray-50: #f9fafb !important;
+  --color-gray-100: #f3f4f6 !important;
+  --color-gray-200: #e5e7eb !important;
+  --color-gray-300: #d1d5db !important;
+  --color-gray-400: #9ca3af !important;
+  --color-gray-500: #6b7280 !important;
+  --color-gray-600: #4b5563 !important;
+  --color-gray-700: #374151 !important;
+  --color-gray-800: #1f2937 !important;
+  --color-gray-900: #111827 !important;
+  --color-gray-950: #030712 !important;
+
+  --color-zinc-50: #fafafa !important;
+  --color-zinc-100: #f4f4f5 !important;
+  --color-zinc-200: #e4e4e7 !important;
+  --color-zinc-300: #d4d4d8 !important;
+  --color-zinc-400: #a1a1aa !important;
+  --color-zinc-500: #71717a !important;
+  --color-zinc-600: #52525b !important;
+  --color-zinc-700: #3f3f46 !important;
+  --color-zinc-800: #27272a !important;
+  --color-zinc-900: #18181b !important;
+  --color-zinc-950: #09090b !important;
+
+  --color-blue-50: #eff6ff !important;
+  --color-blue-100: #dbeafe !important;
+  --color-blue-200: #bfdbfe !important;
+  --color-blue-300: #93c5fd !important;
+  --color-blue-400: #60a5fa !important;
+  --color-blue-500: #3b82f6 !important;
+  --color-blue-600: #2563eb !important;
+  --color-blue-700: #1d4ed8 !important;
+  --color-blue-800: #1e40af !important;
+  --color-blue-900: #1e3a8a !important;
+
+  --color-sky-50: #f0f9ff !important;
+  
+  --color-red-50: #fef2f2 !important;
+  --color-red-100: #fee2e2 !important;
+  --color-red-500: #ef4444 !important;
+  --color-red-600: #dc2626 !important;
+  
+  --color-emerald-500: #10b981 !important;
+  --color-emerald-600: #059669 !important;
+  --color-emerald-700: #047857 !important;
+
+  --color-teal-50: #f0fdfa !important;
+  --color-teal-200: #99f6e4 !important;
+  --color-teal-600: #0d9488 !important;
+  --color-teal-800: #115e59 !important;
+
+  --color-amber-500: #f59e0b !important;
+  --color-amber-600: #d97706 !important;
+  --color-yellow-500: #eab308 !important;
+  --color-green-500: #22c55e !important;
+  --color-teal-500: #14b8a6 !important;
+  --color-purple-500: #a855f7 !important;
+  --color-pink-50: #fdf2f8 !important;
+  --color-pink-500: #ec4899 !important;
+}
+
+/* Print Utilities */
+@media print {
+  /* Reset document and all ancestor elements to prevent spacing, margins, padding, flex, or overflow clipping from breaking the A4 sheet page flow */
+  html, body, #root, #root > div, main, section, .scrollbar-none {
+    display: block !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  /* Block direct browser printing for Agent roles */
+  body[data-agent-role="true"] .print-area {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  body[data-agent-role="true"]::after {
+    content: "নিরাপত্তা সতর্কবার্তা: সরাসরি ব্রাউজার বা শর্টকাট দিয়ে প্রিন্ট করা সম্পূর্ণ নিষিদ্ধ। দয়া করে অফিসিয়াল 'Download PDF' বাটন ব্যবহার করুন।" !important;
+    display: block !important;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-55%, -50%) !important;
+    font-size: 16pt !important;
+    font-weight: bold !important;
+    color: #dc2626 !important;
+    text-align: center !important;
+    width: 90% !important;
+    z-index: 999999 !important;
+    font-family: sans-serif !important;
+  }
+
+  html, body {
+    background: white !important;
+    color: black !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    font-size: 11pt !important;
+  }
+  
+  /* Hide non-printable app UI */
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Force exact print container sizing, behavior, and position at top-left of page 1 */
+  .print-area {
+    visibility: visible !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 15mm 20mm 15mm 20mm !important; /* Standard physical padding margins inside A4 page */
+    width: 210mm !important; /* standard A4 width */
+    height: 297mm !important; /* standard A4 height */
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: white !important;
+  }
+  
+  @page {
+    size: A4 portrait;
+    margin: 0 !important; /* using physical container padding margins defined above */
+  }
+}
+
+/* Custom smooth scrollbar for our sidebars and dashboard lists */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.02);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.25);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.02);
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25);
+}

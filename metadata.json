@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Remix: Remix: Remix: Remix: Remix: Al-Jabbar Report Generator",
+  "description": "An interactive medical examination report portal modeled after Al-Jabbar Medical Center. Allows full editing of patient details, physical exam parameters, lab findings, photo upload, and downloading as a high-fidelity PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

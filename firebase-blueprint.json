@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "Represents an authorized administrator email and metadata.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The Gmail address of the administrator."
+        },
+        "addedAt": {
+          "type": "string",
+          "description": "The ISO timestamp when the admin was added."
+        },
+        "addedBy": {
+          "type": "string",
+          "description": "The email of the administrator who added this account."
+        }
+      },
+      "required": ["email", "addedAt", "addedBy"]
+    },
+    "MedicalReport": {
+      "title": "MedicalReport",
+      "description": "The full patient examination medical report document.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "patient": {
+          "type": "object"
+        },
+        "physical": {
+          "type": "object"
+        },
+        "labs": {
+          "type": "object"
+        },
+        "fitStatus": {
+          "type": "string"
+        },
+        "remarks": {
+          "type": "string"
+        },
+        "signatures": {
+          "type": "object"
+        },
+        "approvalStatus": {
+          "type": "string"
+        },
+        "requestedBy": {
+          "type": "string"
+        },
+        "requestedAt": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "title", "createdAt", "patient", "physical", "labs", "fitStatus", "signatures"]
+    }
+  },
+  "firestore": {
+    "admins/{email}": {
+      "schema": "Admin",
+      "description": "The list of authorized administrative emails."
+    },
+    "reports/{reportId}": {
+      "schema": "MedicalReport",
+      "description": "The collection of all medical exam reports."
+    }
+  }
+}

@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Catch-All Default Safety Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && 
+        request.auth.token.email != null && (
+          request.auth.token.email.toLowerCase() == "apurbohasan948@gmail.com" ||
+          exists(/databases/$(database)/documents/admins/$(request.auth.token.email.toLowerCase()))
+        );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-\\.\\@]+$');
+    }
+
+    // Admins Collection Rules
+    match /admins/{email} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() && isValidId(email);
+    }
+
+    // Global Config Configuration Rules
+    match /global_config/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() && isValidId(docId);
+    }
+
+    // Received Payments Rules
+    match /received_payments/{trxId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || (request.auth == null && isValidId(trxId));
+    }
+
+    // Agent Activity Logs Rules
+    match /agent_activity_logs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(logId);
+      allow delete: if isAdmin();
+    }
+
+    // Reports Collection Rules
+    match /reports/{reportId} {
+      allow read: if isSignedIn();
+      
+      allow create: if isSignedIn() && isValidId(reportId) && (
+        isAdmin() || 
+        (request.resource.data.patient.agency == "SHAHIN/AF-1")
+      );
+
+      allow update: if isSignedIn() && isValidId(reportId) && (
+        isAdmin() ||
+        (
+          resource.data.patient.agency == "SHAHIN/AF-1" &&
+          request.resource.data.patient.agency == "SHAHIN/AF-1" &&
+          (resource.data.approvalStatus != "Approved" || request.resource.data.approvalStatus == "Draft") &&
+          (request.resource.data.approvalStatus == "Draft" || request.resource.data.approvalStatus == "Pending Approval")
+        )
+      );
+
+      allow delete: if isAdmin();
+    }
+  }
+}
